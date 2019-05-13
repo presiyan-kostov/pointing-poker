@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Poker.Domain\Poker.Domain.csproj" />
+    <ProjectReference Include="..\Poker.Model\Poker.Model.csproj" />
+  </ItemGroup>
+
+</Project>
