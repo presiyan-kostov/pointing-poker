@@ -43,6 +43,7 @@ namespace Poker.Service
 
             UserModel result = new UserModel
             {
+                Id = user.Id,
                 Username = user.Username,
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,

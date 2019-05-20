@@ -1,8 +1,14 @@
 import React, { Component } from "react";
+import { UserContext } from "../contexts/UserContext";
+import  { Redirect } from 'react-router-dom';
 import "./Home.css";
 
 export default class Home extends Component {
   render() {
+    if (!this.context.authenticatedUserId){
+      return (<Redirect to="/login"></Redirect>);
+    }
+
     return (
       <div className="Home">
         <div className="lander">
@@ -13,3 +19,5 @@ export default class Home extends Component {
     );
   }
 }
+
+Home.contextType = UserContext;

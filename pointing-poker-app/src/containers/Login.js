@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { UserContext } from "../contexts/UserContext";
+import  { Redirect } from 'react-router-dom';
 import "./Login.css";
 
 export default class Login extends Component {
@@ -9,6 +12,7 @@ export default class Login extends Component {
     this.state = {
       username: '',
       password: '',
+      authenticatedUserId: null,
       errors: {
         username: '',
         password: ''
@@ -57,49 +61,67 @@ export default class Login extends Component {
           return;
         }
       }
-  
+
       const URL = `http://localhost:62973/api/Authentication/login?username=${state.username}&password=${state.password}`;
   
       fetch(URL)
       .then(response => {
-        console.log(response.status);
-      });
+        if (response.status == 200){
+          response.json().then(response => {
+            this.context.updateAuthenticatedUserId(response.id);
+            this.context.pushNewMessage({text: `Hello, Mr/Mrs ${response.firstname} ${response.lastname}! You have been successfully logged in.`, variant: 'success'}, true);
+          });
+        }else{
+          this.context.pushNewMessage({text: 'Your username or password is incorrect!', variant: 'danger'}, true);
+        }
+      })
+      .catch(err => this.context.pushNewMessage({text: err, variant: 'danger'}, true));
     });
   }
 
   render() {
+    if (this.context.authenticatedUserId){
+      return (<Redirect to="/home"></Redirect>);
+    }
+
     let {errors} = this.state;
 
     return (
       <div className="Login">
-        <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="username" bsSize="large">
-            <ControlLabel>Username</ControlLabel>
-            <FormControl
+        <Form onSubmit={this.handleSubmit}>
+
+          <Form.Group controlId="username">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
               autoFocus
               value={this.state.username}
               onChange={this.handleChange}
+              isInvalid={errors.username.length > 0}
             />
-            {errors.username.length > 0 && <span className="error">{errors.username}</span>}
-          </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
+            <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
               value={this.state.password}
               onChange={this.handleChange}
               type="password"
+              isInvalid={errors.password.length > 0}
             />
-            {errors.password.length > 0 && <span className="error">{errors.password}</span>}
-          </FormGroup>
+            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+          </Form.Group>
+
           <Button
             block
-            bsSize="large"
             type="submit"
           >
             Login
           </Button>
-        </form>
+        </Form>
       </div>
     );
   }
 }
+
+Login.contextType = UserContext;

@@ -46,7 +46,7 @@ namespace Poker.WebUI.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult Register([FromForm]SaveModel model)
+        public ActionResult Register([FromBody]SaveModel model)
         {
             try
             {

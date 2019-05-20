@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { UserContext } from "../contexts/UserContext";
+import  { Redirect } from 'react-router-dom';
 import "./SignUp.css";
 
 export default class SignUp extends Component {
@@ -18,7 +21,8 @@ export default class SignUp extends Component {
         firstname: '',
         lastname: '',
         email: ''
-      }
+      },
+      isSuccess: false
     };
   }
 
@@ -125,74 +129,99 @@ export default class SignUp extends Component {
   
       const URL = 'http://localhost:62973/api/User/register';
 
-      let formData = new FormData();
-      formData.append('username', this.state.username);
-      formData.append('password', this.state.password);
-      formData.append('firstname', this.state.firstname);
-      formData.append('lastname', this.state.lastname);
-      formData.append('email', this.state.email);
+      let data = {
+        username: this.state.username,
+        password: this.state.password,
+        firstname: this.state.firstname,
+        lastname: this.state.lastname,
+        email: this.state.email
+      };
 
       fetch(URL, {
           method: 'POST',
-          body: formData
+          body: JSON.stringify(data),
+          headers: {
+            'Accept' : 'application/json',
+            'Content-type' : 'application/json'
+          },
         })
-        .then(response =>
-          console.log(response));
+        .then(response => {
+          if (response.status == 200){
+            response.json().then(response =>{
+              this.context.pushNewMessage({text: `Mr/Mrs ${response.firstname} ${response.lastname}, you have been successfully signed up. You can log in with your credentials below.`, variant: 'success'}, true);
+              this.setState({isSuccess: true});
+            });
+          }
+        });
     });
   }
 
   render() {
+    if (this.state.isSuccess){
+      return (<Redirect to="/login"></Redirect>); 
+    }
+
     let {errors} = this.state;
 
     return (
       <div className="SignUp">
         <form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="username" bsSize="large">
-            <ControlLabel>Username</ControlLabel>
-            <FormControl
+
+          <Form.Group controlId="username">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
               autoFocus
               value={this.state.username}
               onChange={this.handleChange}
+              isInvalid={errors.username.length > 0}
             />
-            {errors.username.length > 0 && <span className="error">{errors.username}</span>}
-          </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
+            <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
               value={this.state.password}
               onChange={this.handleChange}
               type="password"
+              isInvalid={errors.password.length > 0}
             />
-            {errors.password.length > 0 && <span className="error">{errors.password}</span>}
-          </FormGroup>
-          <FormGroup controlId="firstname" bsSize="large">
-            <ControlLabel>First name</ControlLabel>
-            <FormControl
+            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="firstname">
+            <Form.Label>First name</Form.Label>
+            <Form.Control
               value={this.state.firstname}
               onChange={this.handleChange}
+              isInvalid={errors.firstname.length > 0}
             />
-            {errors.firstname.length > 0 && <span className="error">{errors.firstname}</span>}
-          </FormGroup>
-          <FormGroup controlId="lastname" bsSize="large">
-            <ControlLabel>Last name</ControlLabel>
-            <FormControl
+            <Form.Control.Feedback type="invalid">{errors.firstname}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="lastname">
+            <Form.Label>Last name</Form.Label>
+            <Form.Control
               value={this.state.lastname}
               onChange={this.handleChange}
+              isInvalid={errors.lastname.length > 0}
             />
-            {errors.lastname.length > 0 && <span className="error">{errors.lastname}</span>}
-          </FormGroup>
-          <FormGroup controlId="email" bsSize="large">
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
+            <Form.Control.Feedback type="invalid">{errors.lastname}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
               value={this.state.email}
               onChange={this.handleChange}
               type='email'
+              isInvalid={errors.email.length > 0}
             />
-            {errors.email.length > 0 && <span className="error">{errors.email}</span>}
-          </FormGroup>
+            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+          </Form.Group>
+
           <Button
             block
-            bsSize="large"
             type="submit"
           >
             Sign up
@@ -202,3 +231,5 @@ export default class SignUp extends Component {
     );
   }
 }
+
+SignUp.contextType = UserContext;

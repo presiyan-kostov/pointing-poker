@@ -1,34 +1,52 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap"
 import "./App.css";
+import Navigation from "./Navigation";
+import Messages from "./Messages";
 import Routes from "./Routes";
+import { UserContext } from "./contexts/UserContext";
 
 class App extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      authenticatedUserId: '',
+      updateAuthenticatedUserId: this.updateAuthenticatedUserId,
+
+      messages: [],
+      pushNewMessage: this.pushNewMessage,
+      removeMessageAt: this.removeMessageAt
+    }
+  }
+
+  updateAuthenticatedUserId = newAuthenticatedUserId => {
+    this.setState({ authenticatedUserId: newAuthenticatedUserId});
+  }
+
+  pushNewMessage = (message, clear) => {
+    let messages = this.state.messages;
+
+    if (clear){
+      messages = [];
+    }
+
+    this.setState({messages: [...messages, message]})
+  }
+
+  removeMessageAt = (index) => {
+    let messages = this.state.messages.filter((_m, i) => i != index);
+    this.setState({messages: messages});
+  }
+
   render() {
     return (
-      <div className="App container">
-        <Navbar fluid collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">Home</Link>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight>
-              <LinkContainer to="/signup">
-                <NavItem>Signup</NavItem>
-              </LinkContainer>
-              <LinkContainer to="/login">
-                <NavItem>Login</NavItem>
-              </LinkContainer>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        <Routes />
-      </div>
+      <UserContext.Provider value={this.state}>
+        <div className="App container">
+          <Navigation />
+          <Messages />
+          <Routes />
+        </div>
+      </UserContext.Provider>
     );
   }
 }

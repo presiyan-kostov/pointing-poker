@@ -40,7 +40,7 @@ namespace Poker.WebUI
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseCors(options => options.WithOrigins("*").AllowAnyMethod());
+            app.UseCors(options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
             app.UseStaticFiles();
 
             app.UseMvc(routes =>

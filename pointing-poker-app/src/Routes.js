@@ -1,14 +1,22 @@
-import React from "react";
+import React, { Suspense, lazy } from 'react';
 import { Route, Switch } from "react-router-dom";
-import Home from "./containers/Home";
-import NotFound from "./containers/NotFound";
-import Login from "./containers/Login";
-import SignUp from "./containers/SignUp";
+import "./Routes.css";
+
+const HomeLazy = lazy(() => import('./containers/Home'));
+const NotFoundLazy = lazy(() => import('./containers/NotFound'));
+const LoginLazy = lazy(() => import('./containers/Login'));
+const SignUpLazy = lazy(() => import('./containers/SignUp'));
 
 export default () =>
-  <Switch>
-    <Route path="/" exact component={Home} />
-    <Route path="/login" exact component={Login} />
-    <Route path="/signup" exact component={SignUp} />
-    <Route component={NotFound} />
-  </Switch>;
+  <Suspense fallback={
+      <div className="Loading">
+        <h3>Loading...</h3>
+      </div>}>
+    <Switch>
+      <Route path="/" exact component={HomeLazy} />
+      <Route path="/home" exact component={HomeLazy} />
+      <Route path="/login" exact component={LoginLazy} />
+      <Route path="/signup" exact component={SignUpLazy} />
+      <Route component={NotFoundLazy} />
+    </Switch>
+  </Suspense>;
