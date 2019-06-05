@@ -28,12 +28,16 @@ namespace Poker.Service
 
         #region -- public methods --
 
-        public bool Authenticate(string username, string password)
+        public int? Authenticate(string username, string password)
         {
             IUser user = _userFactory.Get(username);
 
-            return user != null && 
-                   user.CheckPassword(password);
+            if (user != null && user.CheckPassword(password))
+            {
+                return user.Id;
+            }
+
+            return null;
         }
 
         #endregion

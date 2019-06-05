@@ -1,14 +1,12 @@
 @media all and (min-width: 480px) {
-    .SignUp {
-        padding: 60px 0;
-    }
-
-    .SignUp form {
-        margin: 0 auto;
+    h1{
+        text-align: left;
+        margin: 20px auto;
         max-width: 320px;
     }
 
-    .error{
-        color: red;
+    form {
+        margin: 0 auto;
+        max-width: 320px;
     }
 }

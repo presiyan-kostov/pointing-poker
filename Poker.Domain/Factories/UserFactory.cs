@@ -10,13 +10,15 @@ namespace Poker.Domain.Factories
         #region -- private readonly fields --
 
         private readonly IProjectUserRepository _projectUserRepository;
+        private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
 
         private readonly IProjectFactory _projectFactory;
 
-        public UserFactory(IProjectUserRepository projectUserRepository, IUserRepository userRepository, IProjectFactory projectFactory)
+        public UserFactory(IProjectUserRepository projectUserRepository, IProjectRepository projectRepository, IUserRepository userRepository, IProjectFactory projectFactory)
         {
             _projectUserRepository = projectUserRepository;
+            _projectRepository = projectRepository;
             _userRepository = userRepository;
 
             _projectFactory = projectFactory;
@@ -35,7 +37,7 @@ namespace Poker.Domain.Factories
                 return null;
             }
 
-            return new User(user, _projectUserRepository, _userRepository, _projectFactory);
+            return new User(user, _projectUserRepository, _projectRepository, _userRepository, _projectFactory);
         }
 
         public IUser Get(string username)
@@ -47,12 +49,12 @@ namespace Poker.Domain.Factories
                 return null;
             }
 
-            return new User(user, _projectUserRepository, _userRepository, _projectFactory);
+            return new User(user, _projectUserRepository, _projectRepository, _userRepository, _projectFactory);
         }
 
         public IUser Get(Transportation.Entities.User user)
         {
-            return new User(user, _projectUserRepository, _userRepository, _projectFactory);
+            return new User(user, _projectUserRepository, _projectRepository, _userRepository, _projectFactory);
         }
 
         public IUser New(string username, string password)
@@ -63,7 +65,7 @@ namespace Poker.Domain.Factories
                                                     Password = password
                                                 };
 
-            return new User(user, _projectUserRepository, _userRepository, _projectFactory);
+            return new User(user, _projectUserRepository, _projectRepository, _userRepository, _projectFactory);
         }
 
         #endregion

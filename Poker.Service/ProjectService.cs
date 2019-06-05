@@ -48,9 +48,9 @@ namespace Poker.Service
             return result;
         }
 
-        public IList<ProjectModel> GetForUser(string username)
+        public IList<ProjectModel> GetForUser(int userId)
         {
-            IUser user = _userFactory.Get(username);
+            IUser user = _userFactory.Get(userId);
             if (user == null)
             {
                 return null;

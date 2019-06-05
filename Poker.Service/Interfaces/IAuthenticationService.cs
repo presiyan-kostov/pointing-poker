@@ -2,6 +2,6 @@
 {
     public interface IAuthenticationService
     {
-        bool Authenticate(string username, string password);
+        int? Authenticate(string username, string password);
     }
 }

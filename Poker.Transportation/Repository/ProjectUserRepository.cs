@@ -22,7 +22,7 @@ namespace Poker.Transportation.Repository
         public IList<ProjectUser> GetByUser(int userId)
         {
             return Session.Query<ProjectUser>()
-                          .Where(x => x.User.Id == userId)
+                          .Where(x => x.User.Id == userId && x.DeletedAt == null)
                           .ToList();
         }
 

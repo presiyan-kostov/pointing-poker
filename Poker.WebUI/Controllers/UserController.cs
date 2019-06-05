@@ -30,12 +30,12 @@ namespace Poker.WebUI.Controllers
 
         #region -- public methods --
 
-        [HttpGet("{username}")]
-        public ActionResult Get(string username)
+        [HttpGet("{id}")]
+        public ActionResult Get(int id)
         {
             try
             {
-                UserModel result = _userService.Get(username.Trim());
+                UserModel result = _userService.Get(id);
 
                 return Ok(result);
             }
@@ -57,7 +57,7 @@ namespace Poker.WebUI.Controllers
                     return BadRequest(validationErrors);
                 }
 
-                UserModel user = _userService.Get(model.Username.Trim());
+                UserModel user = _userService.Get(model.Id);
 
                 return Ok(user);
             }
@@ -67,12 +67,12 @@ namespace Poker.WebUI.Controllers
             }
         }
 
-        [HttpGet("{username}/projects")]
-        public ActionResult GetProjects(string username)
+        [HttpGet("{id}/projects")]
+        public ActionResult GetProjects(int id)
         {
             try
             {
-                IList<ProjectModel> result = _projectService.GetForUser(username);
+                IList<ProjectModel> result = _projectService.GetForUser(id);
 
                 return Ok(result);
             }

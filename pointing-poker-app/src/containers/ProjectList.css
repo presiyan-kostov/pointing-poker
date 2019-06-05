@@ -5,8 +5,7 @@
         max-width: 320px;
     }
 
-    form {
-        margin: 0 auto;
-        max-width: 320px;
+    div.card{
+        margin: 5px
     }
-}
+  }

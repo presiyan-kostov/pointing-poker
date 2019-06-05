@@ -1,4 +1,6 @@
-﻿using NHibernate;
+﻿using System.Collections.Generic;
+using System.Linq;
+using NHibernate;
 using Poker.Transportation.Entities;
 using Poker.Transportation.Repository.Base;
 using Poker.Transportation.Repository.Interfaces;
@@ -9,6 +11,13 @@ namespace Poker.Transportation.Repository
     {
         public ProjectRepository(ISession session) : base(session)
         {
+        }
+
+        public IList<Project> GetAllNotDeleted()
+        {
+            return Session.Query<Project>()
+                          .Where(x => x.DeletedAt == null)
+                          .ToList();
         }
     }
 }

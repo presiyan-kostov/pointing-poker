@@ -1,10 +1,11 @@
 import React from 'react';
 
 export const UserContext = React.createContext({
-    authenticatedUserId: '',
-    updateAuthenticatedUserId: () => {},
+    authenticatedUser: '',
+    updateAuthenticatedUser: () => {},
 
     messages: [],
     pushNewMessage: () => {},
-    removeMessageAt: () => {}
+    removeMessageAt: () => {},
+    clearMessages: () => {},
 });

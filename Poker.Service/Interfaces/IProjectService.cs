@@ -7,6 +7,6 @@ namespace Poker.Service.Interfaces
     {
         ProjectModel Get(int id);
 
-        IList<ProjectModel> GetForUser(string username);
+        IList<ProjectModel> GetForUser(int userId);
     }
 }

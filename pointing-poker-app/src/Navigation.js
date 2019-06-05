@@ -1,22 +1,29 @@
 import React from "react";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Badge } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import { UserContext } from "./contexts/UserContext";
+import "./Navigation.css";
 
 export default function Navigation() {
     return (
         <UserContext.Consumer>
             {
-                ({authenticatedUserId, updateAuthenticatedUserId, pushNewMessage}) => (
+                ({authenticatedUser, updateAuthenticatedUser, pushNewMessage}) => (
                     <Navbar>
-                        {authenticatedUserId &&
+                        {authenticatedUser &&
                         <Navbar.Brand>
                             <Link to="/">Home</Link>
                         </Navbar.Brand>}
+                        {authenticatedUser &&
+                        <Nav>
+                            <Nav.Item>
+                                <Link to="/projectlist">Projects</Link>
+                            </Nav.Item>
+                        </Nav>}
                         <Navbar.Toggle />
-                        <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav className="justify-content-end">
-                                {!authenticatedUserId &&
+                        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+                            <Nav>
+                                {!authenticatedUser &&
                                 <>
                                     <Nav.Item>
                                         <Link className="nav-link" to="/signup">Sign up</Link>
@@ -25,13 +32,19 @@ export default function Navigation() {
                                         <Link className="nav-link" to="/login">Login</Link>
                                     </Nav.Item>
                                 </>}
-                                {authenticatedUserId &&
+                                {authenticatedUser &&
+                                <>
+                                    <Navbar.Text>
+                                        Logged in as: {authenticatedUser.firstname} {authenticatedUser.lastname} (<b>{authenticatedUser.username}</b>{authenticatedUser.isAdmin && <Badge variant="primary">admin</Badge>})
+                                    </Navbar.Text>
+                                </>}
+                                {authenticatedUser &&
                                 <>
                                     <Nav.Item>
                                         <Link className="nav-link" to="/login"
                                             onClick={() => {
-                                                updateAuthenticatedUserId(null);
-                                                pushNewMessage({text: 'You have been successfully logged out.', variant: 'success'}, true);
+                                                pushNewMessage({text: `Goodbye, Mr/Mrs ${authenticatedUser.firstname} ${authenticatedUser.lastname}! You have been successfully logged out.`, variant: 'success'}, true);
+                                                updateAuthenticatedUser(null);
                                                 }}>
                                             Log out
                                         </Link>

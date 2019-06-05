@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Poker.Domain.Entities.Interfaces;
 using Poker.Domain.Factories.Interfaces;
-using Poker.Transportation.Entities;
 
 namespace Poker.Domain.Entities
 {
@@ -12,6 +12,7 @@ namespace Poker.Domain.Entities
 
         private readonly Transportation.Entities.User _user;
         private readonly Transportation.Repository.Interfaces.IProjectUserRepository _projectUserRepository;
+        private readonly Transportation.Repository.Interfaces.IProjectRepository _projectRepository;
         private readonly Transportation.Repository.Interfaces.IUserRepository _userRepository;
 
         private readonly IProjectFactory _projectFactory;
@@ -22,11 +23,13 @@ namespace Poker.Domain.Entities
 
         public User(Transportation.Entities.User user,
                     Transportation.Repository.Interfaces.IProjectUserRepository projectUserRepository,
+                    Transportation.Repository.Interfaces.IProjectRepository projectRepository,
                     Transportation.Repository.Interfaces.IUserRepository userRepository,
                     IProjectFactory projectFactory)
         {
             _user = user;
             _projectUserRepository = projectUserRepository;
+            _projectRepository = projectRepository;
             _userRepository = userRepository;
 
             _projectFactory = projectFactory;
@@ -58,6 +61,12 @@ namespace Poker.Domain.Entities
             set => _user.Email = value;
         }
 
+        public bool IsAdmin
+        {
+            get => _user.IsAdmin;
+            set => _user.IsAdmin = value;
+        }
+
         #endregion
 
         #region -- public methods --
@@ -69,19 +78,18 @@ namespace Poker.Domain.Entities
 
         public IList<IProject> GetProjects()
         {
-            IList<IProject> result = new List<IProject>();
-            IList<ProjectUser> projectUsers = _projectUserRepository.GetByUser(_user.Id);
+            IEnumerable<Transportation.Entities.Project> entities;
 
-            foreach (ProjectUser projectUser in projectUsers)
+            if (IsAdmin)
             {
-                IProject project = _projectFactory.Get(projectUser.Project);
-                if (project != null)
-                {
-                    result.Add(project);
-                }
+                entities = _projectRepository.GetAllNotDeleted();
+            }
+            else
+            {
+                entities = _projectUserRepository.GetByUser(_user.Id).Select(x => x.Project);
             }
 
-            return result;
+            return entities.Select(x => _projectFactory.Get(x)).ToList();
         }
 
         public void Save()

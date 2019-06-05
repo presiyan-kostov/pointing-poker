@@ -32,14 +32,14 @@ namespace Poker.WebUI.Controllers
         {
             try
             {
-                bool result = _authenticationService.Authenticate(username.Trim(), password.Trim());
+                int? userId = _authenticationService.Authenticate(username.Trim(), password.Trim());
 
-                if (!result)
+                if (!userId.HasValue)
                 {
                     return BadRequest();
                 }
 
-                UserModel model = _userService.Get(username.Trim());
+                UserModel model = _userService.Get(userId.Value);
 
                 return Ok(model);
             }

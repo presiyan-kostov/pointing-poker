@@ -10,17 +10,18 @@ class App extends Component {
     super(props);
 
     this.state = {
-      authenticatedUserId: '',
-      updateAuthenticatedUserId: this.updateAuthenticatedUserId,
+      authenticatedUser: '',
+      updateAuthenticatedUser: this.updateAuthenticatedUser,
 
       messages: [],
       pushNewMessage: this.pushNewMessage,
-      removeMessageAt: this.removeMessageAt
+      removeMessageAt: this.removeMessageAt,
+      clearMessages: this.clearMessages
     }
   }
 
-  updateAuthenticatedUserId = newAuthenticatedUserId => {
-    this.setState({ authenticatedUserId: newAuthenticatedUserId});
+  updateAuthenticatedUser = newAuthenticatedUser => {
+    this.setState({ authenticatedUser: newAuthenticatedUser});
   }
 
   pushNewMessage = (message, clear) => {
@@ -36,6 +37,10 @@ class App extends Component {
   removeMessageAt = (index) => {
     let messages = this.state.messages.filter((_m, i) => i != index);
     this.setState({messages: messages});
+  }
+
+  clearMessages = () => {
+    this.setState({messages: []});
   }
 
   render() {

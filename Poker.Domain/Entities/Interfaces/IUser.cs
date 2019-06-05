@@ -16,6 +16,8 @@ namespace Poker.Domain.Entities.Interfaces
 
         string Email { get; set; }
 
+        bool IsAdmin { get; set; }
+
         #endregion
 
         #region -- public methods --

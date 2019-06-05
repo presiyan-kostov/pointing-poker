@@ -32,9 +32,9 @@ namespace Poker.Service
 
         #region -- public methods --
 
-        public UserModel Get(string username)
+        public UserModel Get(int id)
         {
-            IUser user = _userFactory.Get(username);
+            IUser user = _userFactory.Get(id);
 
             if (user == null)
             {
@@ -47,7 +47,8 @@ namespace Poker.Service
                 Username = user.Username,
                 Firstname = user.Firstname,
                 Lastname = user.Lastname,
-                Email = user.Email
+                Email = user.Email,
+                IsAdmin = user.IsAdmin
             };
 
             return result;
@@ -77,6 +78,7 @@ namespace Poker.Service
                 try
                 {
                     user.Save();
+                    model.Id = user.Id;
 
                     transaction.Commit();
                 }

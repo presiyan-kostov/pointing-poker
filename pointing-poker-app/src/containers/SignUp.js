@@ -24,6 +24,23 @@ export default class SignUp extends Component {
       },
       isSuccess: false
     };
+
+    this.validationErrorTypes ={
+      UsernameMissing : 0,
+      UsernameExists : 1,
+      UsernameToLong : 2,
+      PasswordMissing : 3,
+      PasswordToLong : 4,
+      FirstnameMissing : 5,
+      FirstnameToLong : 6,
+      LastnameMissing : 7,
+      LastnameToLong : 8,
+      EmailMissing : 9,
+      EmailToLong : 10,
+      EmailWrongFormat : 11
+    };
+
+    Object.freeze(this.validationErrorTypes);
   }
 
   validateForm() {
@@ -151,6 +168,56 @@ export default class SignUp extends Component {
               this.context.pushNewMessage({text: `Mr/Mrs ${response.firstname} ${response.lastname}, you have been successfully signed up. You can log in with your credentials below.`, variant: 'success'}, true);
               this.setState({isSuccess: true});
             });
+          }else{
+            response.json().then(response => {
+              let errors = {};
+
+              if (response.some(x => x == this.validationErrorTypes.UsernameMissing)){
+                errors.username = 'Please enter the username.';
+              }else if (response.some(x => x == this.validationErrorTypes.UsernameExists)){
+                errors.username = 'This username is already taken. Please choose another one.';
+              }else if (response.some(x => x == this.validationErrorTypes.UsernameToLong)){
+                errors.username = 'The entered username is too long.';
+              }else{
+                errors.username = '';
+              }
+
+              if (response.some(x => x == this.validationErrorTypes.PasswordMissing)){
+                errors.password = 'Please enter the password.';
+              }else if (response.some(x => x == this.validationErrorTypes.PasswordToLong)){
+                errors.password = 'The entered password is too long.';
+              }else{
+                errors.password = '';
+              }
+
+              if (response.some(x => x == this.validationErrorTypes.FirstnameMissing)){
+                errors.firstname = 'Please enter the first name.';
+              }else if (response.some(x => x == this.validationErrorTypes.FirstnameToLong)){
+                errors.firstname = 'The first name is too long.';
+              }else{
+                errors.firstname = '';
+              }
+
+              if (response.some(x => x == this.validationErrorTypes.LastnameMissing)){
+                errors.lastname = 'Please enter the last name.';
+              }else if (response.some(x => x == this.validationErrorTypes.LastnameToLong)){
+                errors.lastname = 'The entered last name is too long.';
+              }else{
+                errors.lastname = '';
+              }
+
+              if (response.some(x => x == this.validationErrorTypes.EmailMissing)){
+                errors.email = 'Please enter the email.';
+              }else if (response.some(x => x == this.validationErrorTypes.EmailToLong)){
+                errors.email = 'The entered email is too long.';
+              }else if (response.some(x => x == this.validationErrorTypes.EmailWrongFormat)){
+                errors.email = 'Please enter valid email.';
+              }else{
+                errors.email = '';
+              }
+
+              this.setState({errors: errors});
+            });
           }
         });
     });
@@ -164,7 +231,8 @@ export default class SignUp extends Component {
     let {errors} = this.state;
 
     return (
-      <div className="SignUp">
+      <div>
+        <h1>Sign up</h1>
         <form onSubmit={this.handleSubmit}>
 
           <Form.Group controlId="username">

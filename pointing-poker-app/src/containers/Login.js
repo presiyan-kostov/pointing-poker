@@ -12,7 +12,7 @@ export default class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      authenticatedUserId: null,
+      authenticatedUser: null,
       errors: {
         username: '',
         password: ''
@@ -68,7 +68,7 @@ export default class Login extends Component {
       .then(response => {
         if (response.status == 200){
           response.json().then(response => {
-            this.context.updateAuthenticatedUserId(response.id);
+            this.context.updateAuthenticatedUser(response);
             this.context.pushNewMessage({text: `Hello, Mr/Mrs ${response.firstname} ${response.lastname}! You have been successfully logged in.`, variant: 'success'}, true);
           });
         }else{
@@ -80,14 +80,15 @@ export default class Login extends Component {
   }
 
   render() {
-    if (this.context.authenticatedUserId){
+    if (this.context.authenticatedUser){
       return (<Redirect to="/home"></Redirect>);
     }
 
     let {errors} = this.state;
 
     return (
-      <div className="Login">
+      <div>
+        <h1>Login</h1>
         <Form onSubmit={this.handleSubmit}>
 
           <Form.Group controlId="username">
