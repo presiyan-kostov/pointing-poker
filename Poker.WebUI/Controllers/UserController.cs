@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Poker.Model.Project;
 using Poker.Model.User;
 using Poker.Service.Interfaces;
+using ValidationError = Poker.Model.User.ValidationError;
 
 namespace Poker.WebUI.Controllers
 {
@@ -57,7 +58,7 @@ namespace Poker.WebUI.Controllers
                     return BadRequest(validationErrors);
                 }
 
-                UserModel user = _userService.Get(model.Id);
+                UserModel user = _userService.Get(model.Id.Value);
 
                 return Ok(user);
             }

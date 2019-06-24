@@ -5,8 +5,10 @@ namespace Poker.Service.Interfaces
 {
     public interface IProjectService
     {
-        ProjectModel Get(int id);
+        ProjectModel Get(int projectId, int userId);
 
         IList<ProjectModel> GetForUser(int userId);
+
+        IList<ValidationError> Save(ProjectModel model);
     }
 }

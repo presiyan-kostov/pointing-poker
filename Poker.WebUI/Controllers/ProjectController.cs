@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Poker.Model.Project;
 using Poker.Service.Interfaces;
@@ -31,9 +32,31 @@ namespace Poker.WebUI.Controllers
         {
             try
             {
-                ProjectModel result = _projectService.Get(id);
+                ProjectModel result = _projectService.Get(id, 0);
 
                 return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        [HttpPost("save")]
+        public ActionResult Save([FromBody]ProjectModel model)
+        {
+            try
+            {
+                IList<ValidationError> validationErrors = _projectService.Save(model);
+
+                if (validationErrors.Count > 0)
+                {
+                    return BadRequest(validationErrors);
+                }
+
+                ProjectModel project = _projectService.Get(model.Id.Value, 0);
+
+                return Ok(project);
             }
             catch (Exception e)
             {

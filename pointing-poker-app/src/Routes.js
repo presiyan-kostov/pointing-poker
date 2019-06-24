@@ -7,6 +7,7 @@ const NotFoundLazy = lazy(() => import('./containers/NotFound'));
 const LoginLazy = lazy(() => import('./containers/Login'));
 const SignUpLazy = lazy(() => import('./containers/SignUp'));
 const ProjectListLazy = lazy(() => import('./containers/ProjectList'));
+const ProjectLazy = lazy(() => import('./containers/Project'));
 
 export default () =>
   <Suspense fallback={
@@ -19,6 +20,7 @@ export default () =>
       <Route path="/login" exact component={LoginLazy} />
       <Route path="/signup" exact component={SignUpLazy} />
       <Route path="/projectlist" exact component={ProjectListLazy} />
+      <Route path="/project" exact component={ProjectLazy} />
       <Route component={NotFoundLazy} />
     </Switch>
   </Suspense>;

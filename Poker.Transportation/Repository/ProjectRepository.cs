@@ -19,5 +19,12 @@ namespace Poker.Transportation.Repository
                           .Where(x => x.DeletedAt == null)
                           .ToList();
         }
+
+        public Project GetByCode(string code)
+        {
+            return Session.Query<Project>()
+                          .FirstOrDefault(x => x.Code == code &&
+                                               x.DeletedAt == null);
+        }
     }
 }

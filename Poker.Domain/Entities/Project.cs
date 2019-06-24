@@ -1,5 +1,7 @@
 ﻿using System;
+using Poker.Domain.Entities.Catalogues;
 using Poker.Domain.Entities.Interfaces;
+using Poker.Transportation.Repository.Interfaces;
 
 namespace Poker.Domain.Entities
 {
@@ -58,6 +60,14 @@ namespace Poker.Domain.Entities
         {
             _project.DeletedAt = DateTime.Now;
             _projectRepository.AddOrUpdate(_project);
+        }
+
+        public void AddUser(int userId, Role role)
+        {
+        }
+
+        public void DeleteUser(int userId)
+        {
         }
 
         #endregion

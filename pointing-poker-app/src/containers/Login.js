@@ -69,7 +69,7 @@ export default class Login extends Component {
         if (response.status == 200){
           response.json().then(response => {
             this.context.updateAuthenticatedUser(response);
-            this.context.pushNewMessage({text: `Hello, Mr/Mrs ${response.firstname} ${response.lastname}! You have been successfully logged in.`, variant: 'success'}, true);
+            this.context.pushNewMessage({text: `Hello, ${response.firstname} ${response.lastname}! You have been successfully logged in.`, variant: 'success'}, true);
           });
         }else{
           this.context.pushNewMessage({text: 'Your username or password is incorrect!', variant: 'danger'}, true);

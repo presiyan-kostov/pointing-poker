@@ -6,6 +6,8 @@ namespace Poker.Domain.Factories.Interfaces
     {
         IProject Get(int id);
 
+        IProject Get(string code);
+
         IProject Get(Transportation.Entities.Project project);
 
         IProject New();

@@ -9,7 +9,8 @@ export default class ProjectList extends Component {
       super(props);
 
       this.state = {
-          projects: []
+          projects: [],
+          selectedProjectId: null
       }
     }
 
@@ -38,13 +39,21 @@ export default class ProjectList extends Component {
             return (<Redirect to="/login"></Redirect>);
         }
 
+        if (this.state.selectedProjectId == -1){
+            return (<Redirect to={{pathname: '/project'}}></Redirect>);
+        }
+
+        if (this.state.selectedProjectId){
+            return (<Redirect to={{pathname: '/project', id: this.state.selectedProjectId}}></Redirect>);
+        }
+
         let projects = this.state.projects.map(p => (
             <Card key={p.id} style={{ width: '18rem' }} bg="light">
                 <Card.Body>
                     <Card.Title>{p.code}</Card.Title>
                     <Card.Link href={p.youTrackUrl}>YouTrack URL</Card.Link>
                     <Card.Text>{p.youTrackQuery}</Card.Text>
-                    <Button variant="primary" size="sm" block>Open</Button>
+                    {this.context.authenticatedUser.isAdmin && <Button variant="primary" size="sm" block onClick={() => this.setState({ selectedProjectId: p.id})}>Open</Button>}
                 </Card.Body>
             </Card>
         ));
@@ -55,7 +64,7 @@ export default class ProjectList extends Component {
                 <CardColumns>
                     {projects}
                 </CardColumns>
-                {this.context.authenticatedUser.isAdmin && <Button variant="primary" size="lg" className="float-right">New project</Button>}
+                {this.context.authenticatedUser.isAdmin && <Button variant="primary" size="lg" className="float-right" onClick={() => this.setState({ selectedProjectId: -1})}>New project</Button>}
             </div>
         );
     }

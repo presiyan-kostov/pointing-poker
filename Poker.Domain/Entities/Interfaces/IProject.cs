@@ -1,4 +1,6 @@
-﻿namespace Poker.Domain.Entities.Interfaces
+﻿using Poker.Domain.Entities.Catalogues;
+
+namespace Poker.Domain.Entities.Interfaces
 {
     public interface IProject
     {
@@ -19,6 +21,10 @@
         void Save();
 
         void Delete();
+
+        void AddUser(int userId, Role role);
+
+        void DeleteUser(int userId);
 
         #endregion
     }

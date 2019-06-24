@@ -165,7 +165,7 @@ export default class SignUp extends Component {
         .then(response => {
           if (response.status == 200){
             response.json().then(response =>{
-              this.context.pushNewMessage({text: `Mr/Mrs ${response.firstname} ${response.lastname}, you have been successfully signed up. You can log in with your credentials below.`, variant: 'success'}, true);
+              this.context.pushNewMessage({text: `${response.firstname} ${response.lastname}, you have been successfully signed up. You can log in with your credentials below.`, variant: 'success'}, true);
               this.setState({isSuccess: true});
             });
           }else{

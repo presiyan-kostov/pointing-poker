@@ -43,7 +43,7 @@ export default function Navigation() {
                                     <Nav.Item>
                                         <Link className="nav-link" to="/login"
                                             onClick={() => {
-                                                pushNewMessage({text: `Goodbye, Mr/Mrs ${authenticatedUser.firstname} ${authenticatedUser.lastname}! You have been successfully logged out.`, variant: 'success'}, true);
+                                                pushNewMessage({text: `Goodbye, ${authenticatedUser.firstname} ${authenticatedUser.lastname}! You have been successfully logged out.`, variant: 'success'}, true);
                                                 updateAuthenticatedUser(null);
                                                 }}>
                                             Log out

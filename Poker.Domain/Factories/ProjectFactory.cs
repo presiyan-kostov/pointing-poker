@@ -35,6 +35,18 @@ namespace Poker.Domain.Factories
             return new Project(project, _projectRepository);
         }
 
+        public IProject Get(string code)
+        {
+            Transportation.Entities.Project project = _projectRepository.GetByCode(code);
+
+            if (project == null || project.DeletedAt.HasValue)
+            {
+                return null;
+            }
+
+            return new Project(project, _projectRepository);
+        }
+
         public IProject Get(Transportation.Entities.Project project)
         {
             return new Project(project, _projectRepository);

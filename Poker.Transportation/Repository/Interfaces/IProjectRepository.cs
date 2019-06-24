@@ -7,5 +7,7 @@ namespace Poker.Transportation.Repository.Interfaces
     public interface IProjectRepository : IRepositoryBase<Project>
     {
         IList<Project> GetAllNotDeleted();
+
+        Project GetByCode(string code);
     }
 }
